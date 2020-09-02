@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: jdbc:mysql://49.235.130.125:3306/hua
+    username: root
+    password: 112453
+    driver-class-name: com.mysql.jdbc.Driver
+mybatis:
+  mapper-locations: classpath:mybatis/*Mapper.xml
+
+

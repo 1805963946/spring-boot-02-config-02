@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录成功</title>
+    <script type="text/javascript" src="https://www.w3school.com.cn/jquery/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $.post("/getUserInfo","a=1&b=2",function (data) {
+                $("#spanInfo").html(data["username"]);
+            });
+        });
+    </script>
+</head>
+<body>
+<span id="spanInfo"></span>登录成功
+</body>
+</html>
