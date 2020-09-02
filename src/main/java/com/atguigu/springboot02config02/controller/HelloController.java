@@ -104,6 +104,7 @@ public class HelloController {
     @RequestMapping("/getUserInfo")
     @ResponseBody
     public Object getLoginInfo(HttpServletRequest request ){
+        System.out.println("111");
         return request.getSession().getAttribute("userInfo");
     }
 
