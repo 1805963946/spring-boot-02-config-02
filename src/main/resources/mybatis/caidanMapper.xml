@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.springboot02config02.mybatais.Caidan">
+    <!--查询-->
+    <select id="selectall" resultType="java.util.Map">
+       select *  from t_caidan
+    </select>
+
+    <select id="getcaidan" resultType="java.util.Map">
+     SELECT
+		t_caidan.id,t_caidan.name,t_caidan.pid
+FROM
+	t_juese_user
+inner JOIN t_user ON t_user.id = t_juese_user.userid
+inner JOIN t_juese_caidan ON t_juese_user.jueseid = t_juese_caidan.jueseid
+inner JOIN t_caidan ON t_caidan.id = t_juese_caidan.caidanid
+WHERE
+	t_user.id =  #{id}
+    </select>
+</mapper>
