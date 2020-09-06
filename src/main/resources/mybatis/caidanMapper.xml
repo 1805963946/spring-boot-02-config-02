@@ -10,7 +10,7 @@
 
     <select id="getcaidan" resultType="java.util.Map">
      SELECT
-		t_caidan.id,t_caidan.name,t_caidan.pid
+		t_caidan.*
 FROM
 	t_juese_user
 inner JOIN t_user ON t_user.id = t_juese_user.userid

@@ -1,4 +1,4 @@
-package com.atguigu.springboot02config02;
+package com;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -2,6 +2,7 @@ package com.atguigu.springboot02config02.controller;
 
 import com.atguigu.springboot02config02.mybatais.Caidan;
 import com.atguigu.springboot02config02.mybatais.TestDao;
+import com.atguigu.springboot02config02.util.MD5Utils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,6 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.sql.*;
 import java.util.*;
+
+import static com.atguigu.springboot02config02.util.MD5Utils.stringToMD5;
 
 @Controller
 public class HelloController {
@@ -33,8 +36,10 @@ public class HelloController {
             returnMap.put("message", "账号不存在");
             return returnMap;
         }
+
         String password = request.getParameter("psw");
-        if (!user.get(0).get("psw").equals(password)) {
+
+        if (!user.get(0).get("psw").equals(stringToMD5(password))) {
             returnMap.put("code", "1");
             returnMap.put("message", "密码错误");
             return returnMap;

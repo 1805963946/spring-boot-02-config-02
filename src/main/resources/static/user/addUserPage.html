@@ -1,0 +1,21 @@
+<script type="text/javascript">
+    $(function () {
+        $("#addUserPageButton").click(function () {
+            $.post("/addUser", $("#addUserPageForm").serialize(), function (data) {
+                if (data == 1) {
+                    alert("新增成功");
+                    $("#addUserPageForm").get(0).reset();//新增成功以后清空
+                    return;
+                }
+                alert("新增失败");
+            }, "text");
+        });
+    });
+</script>
+<div>
+    <form id="addUserPageForm">
+        用户名:<input name="username" type="text"><br>
+        密码:<input name="psw" type="text"><br>
+        <input type="button" id="addUserPageButton" value="新增用户">
+    </form>
+</div>

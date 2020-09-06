@@ -34,7 +34,7 @@
             var html = "<ul>";
             for (var i = 0; i < data.length; i++) {
                 if (data[i]["child"].length == 0) {
-                    html += "<li>" + data[i]["name"] + "</li>";
+                    html += "<li onclick=\"loadPage('" + data[i]["url"] + "')\">" + data[i]["name"] + "</li>";
                     continue;
                 }
 
@@ -47,19 +47,20 @@
             return html;
         }
 
+        function loadPage(url) {
+            if (!url) {
+                alert("url:" + url + "  为空");
+                return;
+            }
+            $("#mainPageShuju").load(url);
+        }
     </script>
 </head>
 <body>
 <div style="width:100%;height:150px;background-color:#cccccc;">
     <img src="img/banner.png" style="width: 100%;height: 100%"/>
 </div>
-<div style="width: 20%;height: 500px;background-color: aqua;" id="caidanDiv">
-
-</div>
-
-<div style="width: 75%;height: 500px;background-color: beige" id="shuju">
-
-
-</div>
+<div style="width: 20%;height: 500px;background-color: aqua;" id="caidanDiv"></div>
+<div style="width: 75%;height: 500px;background-color: beige" id="mainPageShuju"></div>
 </body>
 </html>
