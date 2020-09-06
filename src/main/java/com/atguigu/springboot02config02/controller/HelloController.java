@@ -1,6 +1,10 @@
 package com.atguigu.springboot02config02.controller;
 
+import com.atguigu.springboot02config02.mybatais.Caidan;
 import com.atguigu.springboot02config02.mybatais.TestDao;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,60 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.sql.*;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 @Controller
 public class HelloController {
 
     @Autowired
     TestDao testDao;
-
-    @RequestMapping("/selectAll")
-    @ResponseBody
-    public Object selectAll() {
-        return testDao.selectAll();
-    }
-
-
-    @RequestMapping("/test")
-    @ResponseBody
-    public Object testMbatis() {
-        return testDao.getEmpById("xiao");
-    }
-
-    @RequestMapping("/hello")
-    public String hello() {
-        return "hello";
-    }
-
-//    @RequestMapping("/login")
-//    @ResponseBody
-//    public Object login(HttpServletRequest request,String username ){
-//        List<Map<String,Object>> user =testDao.getEmpById(username);
-//        if(user.size()==0){
-//            return "用户不存在";
-//        }String password =request.getParameter("psw");
-//        if (!user.get(0).get("psw").equals(password)){
-//            return "密码错误";
-//        }
-//        return user.get(0);
-//    }
-
-    @RequestMapping("/login")
-    public String login(HttpServletRequest request, String username) {
-        List<Map<String, Object>> user = testDao.getEmpById(username);
-        if (user.size() == 0) {
-            return "redirect:login/login.html";
-        }
-        String password = request.getParameter("psw");
-        if (!user.get(0).get("psw").equals(password)) {
-            return "redirect:login/login.html";
-        }
-        return "redirect:/index.html";
-    }
 
     @RequestMapping("/ajaxLogin")
     @ResponseBody
@@ -85,25 +42,42 @@ public class HelloController {
         returnMap.put("code", "0");
         returnMap.put("message", "登录成功");
 
-        request.getSession().setAttribute("userInfo",user.get(0));
+        request.getSession().setAttribute("userInfo", user.get(0));
         return returnMap;
     }
 
-    @RequestMapping("/testPar")
-    @ResponseBody
-    public Object testParam(HttpServletRequest request ){
-        return request.getParameter("s1")+request.getParameter("s2");
-    }
-
-    @RequestMapping("/loginUser")
-    @ResponseBody
-    public Object loginUser(HttpServletRequest request ){
-        return request.getSession().getAttribute("userInfo");
-    }
 
     @RequestMapping("/getUserInfo")
     @ResponseBody
-    public Object getLoginInfo(HttpServletRequest request ){
+    public Object getLoginInfo(HttpServletRequest request) {
         return request.getSession().getAttribute("userInfo");
+    }
+
+
+    @Autowired
+    Caidan caidan;
+
+    @RequestMapping("/inde")
+    @ResponseBody
+    public Object index(HttpServletRequest request ) throws JSONException {
+        Map<String,Object> user = (Map<String, Object>) request.getSession().getAttribute("userInfo");
+        int id = (int)user.get("id");
+        List<Map<String, Object>> data = caidan.getcaidan(id);
+        List<Map<String, Object>> returnMap = new ArrayList<>();
+        for (Map<String, Object> m : data) {//每一个菜单都有孩子,只不过孩子可能是0个或者多个
+            m.put("child", new ArrayList<Map<String, Object>>());
+        }
+        for (Map<String, Object> m : data) {//开始遍历找孩子
+            if (m.get("pid") == null) {//如果没有父亲他自己就是顶级节点就不用找父亲了
+                returnMap.add(m);//他如果是顶级节点就直接放到返回的那个map里面
+                continue;
+            }
+            for (Map<String, Object> m1 : data) {//到了这里表示不是顶级节点,需要找父亲
+                if (m.get("pid") == m1.get("id")) {//如果找到了父亲就把自己和父亲简历关系,简历关系就是把自己放到父亲的child这个属性里面
+                    ((List) m1.get("child")).add(m);
+                }
+            }
+        }
+        return returnMap;
     }
 }

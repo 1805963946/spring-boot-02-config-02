@@ -3,20 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <title>登录成功</title>
+    <style>
+        div {
+            float: left
+        }
+    </style>
     <script type="text/javascript" src="https://www.w3school.com.cn/jquery/jquery-1.11.1.min.js"></script>
     <script type="text/javascript">
+
+
         $(function () {
             $.post("/getUserInfo", "a=1&b=2", function (data) {
                 $("#spanInfo").html(data["username"]);
             });
+
+            $.post("/inde", null, function (data) {
+                $("#caidanDiv").html(treeToHtml(data));
+                $("#caidanDiv a ~ ul").hide();
+                $("#caidanDiv").find("a").click(function () {
+                    $(this).find("~ ul").toggle();
+                })
+            });
         });
+
+        /***
+         * 把后台返回的树形结构转化成html字符串
+         * @param data
+         */
+        function treeToHtml(data) {
+            var html = "<ul>";
+            for (var i = 0; i < data.length; i++) {
+                if (data[i]["child"].length == 0) {
+                    html += "<li>" + data[i]["name"] + "</li>";
+                    continue;
+                }
+
+                html += "<li>";
+                html += "<a>" + data[i]["name"] + "</a>";
+                html += treeToHtml(data[i]["child"]);
+                html += "</li>";
+            }
+            html += "</ul>";
+            return html;
+        }
+
     </script>
 </head>
 <body>
 <div style="width:100%;height:150px;background-color:#cccccc;">
     <img src="img/banner.png" style="width: 100%;height: 100%"/>
 </div>
-<div>我是菜单</div>
-<div>我是内容</div>
+<div style="width: 20%;height: 500px;background-color: aqua;" id="caidanDiv">
+
+</div>
+
+<div style="width: 75%;height: 500px;background-color: beige" id="shuju">
+
+
+</div>
 </body>
 </html>
