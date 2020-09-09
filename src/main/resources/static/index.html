@@ -52,7 +52,7 @@
                 alert("url:" + url + "  为空");
                 return;
             }
-            $("#mainPageShuju").load(url);
+            $("#mainPageShuju").load(url+"?sign="+new Date().getTime());
         }
     </script>
 </head>
