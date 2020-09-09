@@ -7,6 +7,7 @@ import com.huahua.user.service.UserService;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -36,6 +37,18 @@ public class UserController {
         }
     }
 
+    @RequestMapping("/userList")
+    @ResponseBody
+    public Object userList(HttpServletRequest hsr) {
+        return userService.userList(parToMap(hsr));
+    }
+
+    @RequestMapping("/user/delById/{id}")
+    @ResponseBody
+    public Object delById(@PathVariable("id") String id) {
+        return userService.delById(id);
+    }
+
     /***
      * 把HttpServletRequest 里面的参数转化为map
      *例  a=1,b=2 转化为{a:1,b:2}
@@ -48,6 +61,7 @@ public class UserController {
         parMap.forEach((k, v) -> {
             retMap.put(k, v[0]);
         });
+
         return retMap;
     }
 }

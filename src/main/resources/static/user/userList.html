@@ -1,0 +1,49 @@
+<script type="text/javascript">
+    $(function () {
+        loadData();
+        $("#userListQueryButton").click(loadData);
+    });
+
+    function loadData() {
+        $.post("/userList", $("#addUserPageForm").serialize(), function (data) {
+            $("#userListData").empty();//清空之前的
+            for (var i = 0; i < data.length; i++) {
+                var html = "";
+                html += "<tr>";
+                html += "<td>" + (i + 1) + "</td>";
+                html += "<td>" + data[i]["username"] + "</td>";
+                html += "<td><input type=\"button\" onclick='delById(" + data[i]["id"] + ")' value=\"删除\"/></td>";
+                html += "</tr>";
+                $("#userListData").append($(html));
+            }
+        });
+    }
+
+    function delById(id) {
+        $.post("/user/delById/" + id, null, function (data) {
+            if (data == 1) {
+                alert("删除成功");
+                loadData();
+                return;
+            }
+            alert("删除失败");
+        });
+    }
+</script>
+<div style="width: 100%;">
+    <form id="addUserPageForm">
+        用户名:<input name="username" type="text"> <input type="button" id="userListQueryButton" value="查询">
+    </form>
+    <hr/>
+    <table border="1">
+        <thead>
+        <tr>
+            <td>序号</td>
+            <td>用户名</td>
+            <td>操作</td>
+        </tr>
+        </thead>
+        <tbody id="userListData">
+        </tbody>
+    </table>
+</div>

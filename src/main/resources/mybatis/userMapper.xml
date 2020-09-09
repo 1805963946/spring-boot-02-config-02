@@ -7,4 +7,19 @@
     <insert id="addUser" parameterType="java.util.Map">
       insert into t_user (username,psw) VALUES (#{username},#{psw})
     </insert>
+
+    <select id="userList" parameterType="java.util.Map" resultType="java.util.Map">
+        select * from t_user t where 1=1
+        <if test="username != null and username!= ''">
+          and  t.username like #{username}
+        </if>
+        <if test="id != null and id!= ''">
+            and  t.id = #{id}
+        </if>
+        LIMIT #{begin},#{pageSize}
+    </select>
+
+    <delete id="delById">
+        DELETE from t_user WHERE id = #{id}
+    </delete>
 </mapper>
