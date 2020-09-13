@@ -7,8 +7,7 @@
     <script type="text/javascript">
         $(function () {
             $("#loginButton").click(function () {
-                var pardata = "username=" + $("input[name='username']").val()  + "&psw=" + $("input[name='psw']").val();
-                $.post("/ajaxLogin", pardata, abcdefg);
+                $.post("/ajaxLogin", $("#loginform").serialize(), abcdefg);
             });
         });
 

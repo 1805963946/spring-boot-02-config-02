@@ -1,0 +1,35 @@
+<script type="text/javascript">
+    $(function () {
+        loadData();
+    });
+    function loadData() {
+        $.post("/message", null, function (data) {
+            $("#message");
+            for (var i = 0; i < data.length; i++) {
+                var html = "";
+                html += "<tr>";
+                html += "<td>" + (i + 1) + "</td>";
+                html += "<td>" + data[i]["username"] + "</td>";
+                html += "<td>" + data[i]["psw"] + "</td>";
+                html += "</tr>";
+                $("#message").append($(html));
+            }
+        });
+    }
+
+</script>
+<div style="width: 100%;">
+
+    <hr/>
+    <table   border="1">
+        <thead>
+        <tr>
+            <td>序号</td>
+            <td>用户名</td>
+            <td>psw</td>
+        </tr>
+        </thead>
+        <tbody id="message">
+        </tbody>
+    </table>
+</div>

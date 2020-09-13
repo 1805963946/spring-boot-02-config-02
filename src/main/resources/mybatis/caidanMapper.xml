@@ -9,7 +9,7 @@
     </select>
 
     <select id="getcaidan" resultType="java.util.Map">
-     SELECT
+     SELECT distinct
 		t_caidan.*
 FROM
 	t_juese_user
@@ -19,4 +19,6 @@ inner JOIN t_caidan ON t_caidan.id = t_juese_caidan.caidanid
 WHERE
 	t_user.id =  #{id}
     </select>
+
+
 </mapper>

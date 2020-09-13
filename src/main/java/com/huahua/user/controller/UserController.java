@@ -1,10 +1,7 @@
 package com.huahua.user.controller;
 
-import com.atguigu.springboot02config02.mybatais.Caidan;
-import com.atguigu.springboot02config02.mybatais.TestDao;
-import com.atguigu.springboot02config02.util.MD5Utils;
+import com.huahua.user.dao.UserDao;
 import com.huahua.user.service.UserService;
-import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,24 +9,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import static com.atguigu.springboot02config02.util.MD5Utils.stringToMD5;
 
 @Controller
 public class UserController {
     @Autowired
     UserService userService;
+    UserDao userDao;
 
     @RequestMapping("/addUser")
     @ResponseBody
     public Object addUser(HttpServletRequest hsr) {
         try {
             Map<String, Object> par = parToMap(hsr);
-            par.put("psw", MD5Utils.stringToMD5(par.get("psw") + ""));//把用户传递过来的明文转化为md5
             userService.addUser(par);
             return 1;
         } catch (Exception e) {
@@ -37,16 +30,31 @@ public class UserController {
         }
     }
 
+
+
     @RequestMapping("/userList")
     @ResponseBody
     public Object userList(HttpServletRequest hsr) {
         return userService.userList(parToMap(hsr));
     }
 
+
     @RequestMapping("/user/delById/{id}")
     @ResponseBody
     public Object delById(@PathVariable("id") String id) {
         return userService.delById(id);
+    }
+
+
+    @RequestMapping("/xiugai")
+    @ResponseBody
+    public Object xiugaipsw(HttpServletRequest hsr) {
+        try {
+            userService.xiugaipsw(parToMap(hsr));
+            return 1;
+        } catch (Exception e) {
+            return 0;
+        }
     }
 
     /***
@@ -63,5 +71,11 @@ public class UserController {
         });
 
         return retMap;
+    }
+
+    @RequestMapping("/message")
+    @ResponseBody
+    public Object message(HttpServletRequest hsr) {
+        return userService.message(parToMap(hsr));
     }
 }

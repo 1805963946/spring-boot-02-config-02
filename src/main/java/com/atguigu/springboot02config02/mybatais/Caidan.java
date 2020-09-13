@@ -12,4 +12,6 @@ public interface Caidan {
     public List<Map<String, Object>> selectall();
 
     public List<Map<String, Object>> getcaidan(@Param("id")int id);
+
+
 }

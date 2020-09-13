@@ -39,7 +39,7 @@ public class HelloController {
 
         String password = request.getParameter("psw");
 
-        if (!user.get(0).get("psw").equals(stringToMD5(password))) {
+        if (!user.get(0).get("psw").equals(password)) {
             returnMap.put("code", "1");
             returnMap.put("message", "密码错误");
             return returnMap;

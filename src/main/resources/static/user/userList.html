@@ -2,6 +2,14 @@
     $(function () {
         loadData();
         $("#userListQueryButton").click(loadData);
+
+
+        $("#adduserButton").click(function () {
+            showWindow("/user/addUserPage.html", function () {
+                loadData();
+            });
+        });
+
     });
 
     function loadData() {
@@ -10,16 +18,42 @@
             for (var i = 0; i < data.length; i++) {
                 var html = "";
                 html += "<tr>";
-                html += "<td>" + (i + 1) + "</td>";
+                html += "<td><span style=\"display: none\" name='hideData'>" + JSON.stringify(data[i]) + "</span>" + (i + 1) + "</td>";
                 html += "<td>" + data[i]["username"] + "</td>";
-                html += "<td><input type=\"button\" onclick='delById(" + data[i]["id"] + ")' value=\"删除\"/></td>";
+                html += "<td>" + data[i]["psw"] + "</td>";
+                html += "<td><input type='button' onclick='delById(" + data[i]["id"] + ")' value=\"删除\"/></td>";
+                html += "<td><input type='button' onclick='changeData(this);' value=\"修改密码\"/></td>";
                 html += "</tr>";
                 $("#userListData").append($(html));
             }
         });
     }
 
+    /***
+     * 修改方法
+     * @param dom
+     */
+    function changeData(dom) {
+        var thisLinData = JSON.parse($(dom).parent().parent().find("span[name='hideData']").html());
+        showWindow("/user/xiugai.html", function (){
+            $.post("/xiugai", $("#userList_xiugaiForm").serialize(), function (data) {
+                if (data == 1) {
+                    alert("修改成功");
+                    return;
+                }
+                alert("修改失败");
+            });
+        }, function () {
+            $("#userList_xiugaiForm").find("[name='username']").val(thisLinData["username"]);
+            $("#userList_xiugaiForm").find("[name='id']").val(thisLinData["id"]);
+        });
+    }
+
     function delById(id) {
+        var r = window.confirm("请确定是否删除");
+        if (!r) {
+            return;
+        }
         $.post("/user/delById/" + id, null, function (data) {
             if (data == 1) {
                 alert("删除成功");
@@ -34,12 +68,17 @@
     <form id="addUserPageForm">
         用户名:<input name="username" type="text"> <input type="button" id="userListQueryButton" value="查询">
     </form>
+
+
     <hr/>
+    <input type="button" value="添加用户" id="adduserButton">
     <table border="1">
         <thead>
         <tr>
             <td>序号</td>
             <td>用户名</td>
+            <td>密码</td>
+            <td>操作</td>
             <td>操作</td>
         </tr>
         </thead>

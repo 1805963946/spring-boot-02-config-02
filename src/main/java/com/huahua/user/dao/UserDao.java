@@ -15,4 +15,9 @@ public interface UserDao {
     public List<Map<String, Object>> userList(Map<String, Object> par);
 
     public Integer delById(@Param("id") String id);
+
+    public Integer xiugaipsw(Map<String, Object> par );
+
+    public List<Map<String, Object>> message(Map<String, Object> par);
+
 }
